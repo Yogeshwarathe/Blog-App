@@ -12,7 +12,6 @@ var knex = require('knex')({
     }
 })
 
-// const knex = require('knex')(options);
 
 
 // This for create table if table not exist in databes
@@ -79,3 +78,5 @@ knex.schema.hasTable('LikeDislikeTable').then(function(exists){
 });
 
   
+
+module.exports = knex;
