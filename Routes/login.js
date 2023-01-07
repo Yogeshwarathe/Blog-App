@@ -1,10 +1,11 @@
-module.exports = (app,jwt,knex,urlencodedParser,fun_coll)=>{
+module.exports = (app,jwt,knex,urlencodedParser,function_call)=>{
     app.post("/login",urlencodedParser,async(req,res)=>{
-        var NewToken = await fun_coll.Token_janreter_fun({Gmail:req.body.Gmail},jwt);
-        var resposns = await res.cookie("TokenJWT",NewToken,{expires: new Date(Date.now() + 1000000),httpOnly: true},((err)=>{
-            console.log(err);
-        }))
-        var TokenCookies = await req.cookies.TokenJWT;
+        var NewToken = await function_call.Token_janreter_fun({Gmail:req.body.Gmail},jwt);
+        // console.log(NewToken);
+        var send_token_to_cookies = await res.cookie('JWT_key',NewToken,{expires: new Date(Date.now() + 1000000),httpOnly: true});
+
+        var TokenCookies = await req.cookies.JWT_key;
+        console.log(TokenCookies);
         if(TokenCookies != undefined){
             const verifyUser = jwt.verify(TokenCookies,"SECRETKEY",(err,cookie)=>{
                 if(err){
@@ -18,13 +19,17 @@ module.exports = (app,jwt,knex,urlencodedParser,fun_coll)=>{
                             // console.log(Data[0].Password);
                             if(Data[0].Password == req.body.Password){
                                 console.log('password chek sucsessful');
-                                res.end(JSON.stringify("login "))
+                                function_call.create_post_function(res);
+                            }else{
+                                function_call.sign_up_page_function(res);
                             }
                         }).catch((err)=>{
                             console.log(err);
                         })
                 }
             }) 
+        }else{
+            console.log("Token got undefined");
         }
     })
 }

@@ -1,4 +1,4 @@
-module.exports = (app,jwt,knex,urlencodedParser,fun_coll)=>{
+module.exports = (app,jwt,knex,urlencodedParser,function_call,new_date)=>{
     app.post("/create_post",urlencodedParser,async(req,res)=>{
         const TokenCookies = await req.cookies.TokenJWT;
         const decoding = await jwt.decode("SECRETKEY");
@@ -11,21 +11,31 @@ module.exports = (app,jwt,knex,urlencodedParser,fun_coll)=>{
         .from("UserInformation")
         .where("Gmail",DecodGmailId)
         .then((Data)=>{
-            // console.log(userPost);
-            const user = {UserId: Data[0].UserId,Gmail:Data[0].Gmail,Date:fun_coll.TodayDate(),Time:fun_coll.Time(),Text: req.body.Text,Discription: req.body.Discription};
-            // console.log(user);
-            knex("CreatePostTable")
-            .insert(user)
-            .then(()=>{
-                res.end(JSON.stringify({Discription: req.body.Discription}))
-                console.log("post create susessfull");
-                // res.sendFile(__dirname + "/" + "./LikeDislikePage.html");
+            if(req.body.Text == undefined && req.body.Discription == undefined){
+                console.log("Text got undefined");
+                function_call.create_post_function(res);
+            }else{
+                const user = {
+                                UserId: Data[0].UserId,
+                                Gmail:Data[0].Gmail,
+                                Date:function_call.TodayDate(new_date),
+                                Time:function_call.Time(new_date),
+                                Text: req.body.Text,
+                                Discription: req.body.Discription
+                            };
+                // console.log(user);
+                knex("CreatePostTable")
+                .insert(user)
+                .then(()=>{
+                    // res.end(JSON.stringify({Discription: req.body.Discription}))
+                    console.log("post create susessfull");
+                    function_call.like_dislike_page_function(res);
+                    })
+                .catch((err)=>{
+                    res.end(JSON.stringify(err));
+                    console.log(err);
                 })
-            .catch((err)=>{
-                res.end(JSON.stringify(err));
-                console.log(err);
-            })
-                    
+            }        
         }) 
     })
 }

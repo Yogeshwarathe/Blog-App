@@ -6,7 +6,6 @@ module.exports = (app,jwt,knex,urlencodedParser)=>{
         // console.log(decoding);
         const DecodGmailId = decoding.tokenJanretar.Gmail;
         // console.log(DecodGmailId);
-        // const DecodGmailId = "yogesh@gmail.com";
         knex
             .select("*")
             .from("CreatePostTable")
@@ -27,27 +26,33 @@ module.exports = (app,jwt,knex,urlencodedParser)=>{
                                     .update({Like: aditionLike,Dislike: aditionDislike})
                                 .   then((data)=>{
                                         console.log('like & Dislike updated sucsessfull');
-                                        res.end(JSON.stringify({Gmail:Data[0].Gmail,Like:aditionLike,Dislike:aditionDislike}))
-                                        // res.sendFile(__dirname + "/" + "./TotalUserInformation.html");
+                                        // res.end(JSON.stringify({Gmail:Data[0].Gmail,Like:aditionLike,Dislike:aditionDislike}))
+                                        function_call.total_user_information_function(res)
                                     }).catch((err)=>{
                                         console.log(err);
                                     })
                                 }
                         }else{
-                            const userLikeDislike = {UserId: PostData[0].UserId,PostId:PostData[0].Id,Gmail:PostData[0].Gmail,Like: req.body.Like,Dislike: req.body.Dislike};
+                            const userLikeDislike = {
+                                                        UserId: PostData[0].UserId,
+                                                        PostId:PostData[0].Id,
+                                                        Gmail:PostData[0].Gmail,
+                                                        Like: req.body.Like,
+                                                        Dislike: req.body.Dislike
+                                                    };
                             // console.log(userLikeDislike);
                             knex("LikeDislikeTable")
                                 .insert(userLikeDislike)
                                 .then(()=>{
-                                    // res.sendFile(__dirname + "/" + "./TotalUserInformation.html");
-                                    // res.end(JSON.stringify("Like & Dislike insert sucsesfull"))
                                     console.log("Like & Dislike insert sucsesfull");
-                                    res.end(JSON.stringify({Gmail:PostData[0].Gmail,Like: req.body.Like,Dislike: req.body.Dislike}))
+                                    function_call.total_user_information_function(res)
+                                    // res.end(JSON.stringify({Gmail:PostData[0].Gmail,Like: req.body.Like,Dislike: req.body.Dislike}))
                                 }).catch((err)=>{
-                                    res.end(JSON.stringify(err));
+                                    console.log(err);
+                                    // res.end(JSON.stringify(err));
                             })
-                        }                 
+                        }              
                     })
-            })   
+            }) 
     })
 }

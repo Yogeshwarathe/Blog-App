@@ -1,4 +1,4 @@
-module.exports = (app, jwt,knex,urlencodedParser)=>{
+module.exports = (app, jwt,knex,urlencodedParser,function_call)=>{
     app.post("/signup",urlencodedParser,(req,res)=>{
         // console.log(req.body);
         if(req.body.Name != undefined && req.body.Gmail != undefined && req.body.Password != undefined){
@@ -12,15 +12,13 @@ module.exports = (app, jwt,knex,urlencodedParser)=>{
                 if(exists == 0){
                     knex('UserInformation').insert(req.body).then(()=>{
                         console.log("Sign Up sucsesfull")
-                        res.end(JSON.stringify("Sign Up Succsesful"));
-                        // res.sendFile(__dirname + "/" + "./LoginPage.html");
+                        function_call.login_page_function(res);
                         })
                         .catch((err) => { 
                             console.log(err); 
                         })
                 }else{
-                    // res.sendFile(__dirname + "/" + "./LoginPage.html");
-                    res.end(JSON.stringify("All ready hava a account"))
+                    function_call.login_page_function(res);
                     console.log("All ready have a account");
                 }
             })

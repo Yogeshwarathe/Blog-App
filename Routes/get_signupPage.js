@@ -1,6 +1,6 @@
-module.exports = (app,jwt,knex)=>{
+module.exports = (app,jwt,knex,function_call)=>{
     app.get('/get_signupPage',function(req,res){
-        res.sendFile(__dirname + "/" + "./SignUpPage.html");
-        // console.log("it's get");
+        function_call.sign_up_page_function(res);
+        console.log("Sign Up Page Got");
     })
 }
