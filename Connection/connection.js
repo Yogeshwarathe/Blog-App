@@ -1,12 +1,31 @@
 
 // this function use to token janret
-function Token_janreter_fun(Gmail,jwt){
-    const Token = jwt.sign({Gmail},"SECRETKEY")
+function Token_janreter_fun(gmail,jwt){
+    const Token = jwt.sign(gmail,"SECRETKEY")
     // console.log(NewToken);
     return Token
 }
 
-                                           
+function send_token_to_cookies(res,NewToken){
+    var token_to_string = NewToken.toString()
+    console.log(NewToken);
+    res.cookie('JWT_key',token_to_string,{expires: new Date(Date.now() + 1000000),httpOnly: true},((err)=>{
+        try{
+            console.log("sucsess");
+        }catch(err){
+            console.log(err);
+        }
+    }));
+    console.log("Token send to cookies");
+}
+
+function get_token_to_cookies(req){
+    var TokenCookies = req.cookies.JWT_key;
+    console.log(TokenCookies);
+    return TokenCookies
+}
+
+
 
 // This function use to get data
 function TodayDate(new_date){
@@ -58,6 +77,8 @@ function total_user_information_function(res){
 
 module.exports ={
                     Token_janreter_fun,
+                    send_token_to_cookies,
+                    get_token_to_cookies,
                     TodayDate,Time,
                     sign_up_page_function,
                     login_page_function,
