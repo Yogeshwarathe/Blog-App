@@ -16,6 +16,7 @@ app.use(express.json());
 
 // this is for mysql databases
 const knex = require("./models/database");
+const connection = require("./migrations/migration");
 
 // open connection file
 const function_call = require("./Connection/connection.js");
@@ -49,13 +50,13 @@ app.use("/",like_dislike);
 require("./Routes/like_dislike")(like_dislike,jwt,knex,urlencodedParser,function_call);
 
 // routes to get total like dislike
-// var TotalLike_Dislike = express.Router();
-// app.use("/",TotalLike_Dislike);
-// require("./Routes/TotalLike_Dislike")(TotalLike_Dislike,jwt,knex,urlencodedParser);
+var TotalLike_Dislike = express.Router();
+app.use("/",TotalLike_Dislike);
+require("./Routes/TotalLike_Dislike")(TotalLike_Dislike,jwt,knex,urlencodedParser);
 
 
 
-var server = app.listen(7535,"127.0.0.1",function(){
+var server = app.listen(process.env.PORT_NUMBER,"127.0.0.1",function(){
     var host = server.address().address
     var port = server.address().port
     console.log("Search in Google => http://%s:%s", host, port+"/get_signupPage")
