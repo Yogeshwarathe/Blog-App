@@ -16,7 +16,6 @@ app.use(express.json());
 
 // this is for mysql databases
 const knex = require("./models/database");
-const connection = require("./migrations/migration");
 
 // open connection file
 const function_call = require("./Connection/connection.js");

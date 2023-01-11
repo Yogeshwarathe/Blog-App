@@ -8,7 +8,7 @@ module.exports = (app,jwt,knex,urlencodedParser,function_call,new_date)=>{
         // const DecodGmailId = "good@gmail.com"
         knex
         .select("*")
-        .from("UserInformation")
+        .from("UserInformations")
         .where("Gmail",DecodGmailId)
         .then((Data)=>{
             if(req.body.Text == undefined && req.body.Discription == undefined){
@@ -24,7 +24,7 @@ module.exports = (app,jwt,knex,urlencodedParser,function_call,new_date)=>{
                                 Discription: req.body.Discription
                             };
                 // console.log(user);
-                knex("CreatePostTable")
+                knex("CreatePostTables")
                 .insert(user)
                 .then(()=>{
                     // res.end(JSON.stringify({Discription: req.body.Discription}))

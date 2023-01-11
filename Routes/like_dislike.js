@@ -1,4 +1,4 @@
-module.exports = (app,jwt,knex,urlencodedParser)=>{
+module.exports = (app,jwt,knex,urlencodedParser,function_call)=>{
     app.post("/like_dislike",urlencodedParser,async(req,res)=>{
         var TokenCookies = await req.cookies.TokenJWT;
         // console.log(TokenCookies);
@@ -8,12 +8,12 @@ module.exports = (app,jwt,knex,urlencodedParser)=>{
         // console.log(DecodGmailId);
         knex
             .select("*")
-            .from("CreatePostTable")
+            .from("CreatePostTables")
             .where("Gmail",DecodGmailId)
             .then((PostData)=>{
                 knex
                     .select("*")
-                    .from("LikeDislikeTable")
+                    .from("LikeDislikeTables")
                     .where("Gmail",DecodGmailId)
                     .then((Data)=>{
                         // console.log(Data);
@@ -21,7 +21,7 @@ module.exports = (app,jwt,knex,urlencodedParser)=>{
                             if(Data[0].Gmail == DecodGmailId){
                                 aditionLike = Data[0].Like + req.body.Like;
                                 aditionDislike = Data[0].Dislike + req.body.Dislike;
-                                knex("LikeDislikeTable")
+                                knex("LikeDislikeTables")
                                     .where({Gmail:Data[0].Gmail})
                                     .update({Like: aditionLike,Dislike: aditionDislike})
                                 .   then((data)=>{
@@ -41,7 +41,7 @@ module.exports = (app,jwt,knex,urlencodedParser)=>{
                                                         Dislike: req.body.Dislike
                                                     };
                             // console.log(userLikeDislike);
-                            knex("LikeDislikeTable")
+                            knex("LikeDislikeTables")
                                 .insert(userLikeDislike)
                                 .then(()=>{
                                     console.log("Like & Dislike insert sucsesfull");

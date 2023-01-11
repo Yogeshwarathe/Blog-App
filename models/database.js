@@ -9,10 +9,7 @@ var knex = require('knex')({
         user: 'root',
         password: process.env.PASSWORD,
         database: process.env.DATABASE
-    },
-    migrations: {
-        directory: 'migrations'
-      }
+    }
 })
 
 
@@ -84,3 +81,7 @@ var knex = require('knex')({
   
 
 module.exports = knex;
+
+
+
+

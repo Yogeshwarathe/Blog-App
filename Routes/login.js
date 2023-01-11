@@ -12,7 +12,7 @@ module.exports = (app,jwt,knex,urlencodedParser,function_call)=>{
         //         }else{
         //             knex
         //                 .select("*")
-        //                 .from("UserInformation")
+        //                 .from("UserInformations")
         //                 .where("Gmail",req.body.Gmail)
         //                 .then((Data)=>{
         //                     // console.log(Data[0].Password);

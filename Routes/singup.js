@@ -4,7 +4,7 @@ module.exports = (app,jwt,knex,urlencodedParser,function_call)=>{
         if(req.body.Name != undefined && req.body.Gmail != undefined && req.body.Password != undefined){
             knex
                 .select("*")
-                .from('UserInformation')
+                .from('UserInformations')
                 .where("Gmail",req.body.Gmail)
                 .then((RowsData) => {
                     if(RowsData[0] != undefined){
@@ -13,7 +13,7 @@ module.exports = (app,jwt,knex,urlencodedParser,function_call)=>{
                             console.log("All ready have a account");
                         }
                     }else{
-                        knex('UserInformation')
+                        knex('UserInformations')
                             .insert(req.body)
                             .then(()=>{
                                 console.log("Sign Up sucsesfull")
